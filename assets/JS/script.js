@@ -20,12 +20,14 @@ var searchBar = document.querySelector(".search-bar");
 var searchButton = document.getElementById("search-button");
 var searchInput = document.getElementById("search-input");
 var form = document.getElementById("form");
-var apiKey = "b2a3d794234a2e76abf165d172c1074d";
+var apiKey = "c3adaa7e48d20b2f65d6246f1225cb77";
 // establish the API URL- save in a variable
 // make another function get forecast weather info
 
 function getCurrentWeatherInfo(cityName) {
-  var currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=imperial&appid=${apiKey}`; // run fetch on this
+  var currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=imperial&appid=${apiKey}`; 
+  
+  // run fetch on this
 
   fetch(currentWeatherUrl)
     .then((response) => {
@@ -35,22 +37,65 @@ function getCurrentWeatherInfo(cityName) {
       console.log(data);
     });
 
+   function getForecastWeatherInfo(cityName) {
+    var forecastWeatherUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}lat={lat}&lon={lon}&appid=${apiKey}`
 
-    function displayCurrentWeather(){
-    const { Name } = data; 
-    const { icon, description } = data.currentWeatherUrl[0];
-    const { temp, humidity } = data.main
-    const { speed } = data.wind
-        console.log(Name, icon, temp, humidity, speed)
-
-    //To display Weather to the site
-    document.querySelector(".cityInput").innerText = "Weather In" + Name;
-    document.querySelector(".icon").src = "https://openweathermap.org/img/wn/" + icon + ".png";
-    document.querySelector(".description").innerText = description;
-    document.queryselection(".temp").innerText = temp + "°C";
-    document.querySelector(".humidity").innerText = "Humidity: " + humidity + "%";
-    document.querySelector(".speed").innerText = "Wind Speed: " + speed + "MPH"
+    fetch(forecastWeatherUrl)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+      });
+      
+      
+      function displayCurrentWeather(data) {
+        const { name } = data;
+        const description = data.weather[0].description;
+        const { temp, humidity } = data.main;
+        console.log(temp, humidity)
+        const { speed } = data.wind;
+        const icon  = data.weather[0].icon;
+        const sunriseTimestamp = data.sys.sunrise;
+        const sunsetTimestamp = data.sys.sunset;
+        const sunriseTime = new Date(sunriseTimestamp * 1000);
+        const sunsetTime = new Date(sunsetTimestamp * 1000);
+        
+              
+        // To display the current weather on the site
+        document.querySelector(".city").innerText = "Weather in " + name;
+        document.querySelector(".short").innerText = description;
+        document.querySelector(".temperature").innerText = temp + "°F";
+        document.querySelector(".humidity").innerText = "Humidity: " + humidity + "%";
+        document.querySelector(".wind-speed").innerText = "Wind Speed: " + speed + " MPH";
+        document.querySelector(".sunrise").innerText = "Sunrise time: " + sunriseTime;
+        document.querySelector(".sunset").innerText = "Sunset time: " + sunsetTime
+        document.querySelector(".sunset").innerText = "Sunset time: " + sunsetTime;
+        document.querySelector(".weather-today").classList.remove("loading");
+        document.querySelector(".weather-icon").src = "http://openweathermap.org/img/wn/"+ icon +".png";
+        document.body.style.backgroundImage = "url('https://source.unsplash.com/1600x900/?" + description + "')";
+        console.log(icon);
     }
+
+      function displayForecastWeather(data) {
+        const forcastDays=5
+        const { Name } = data;
+        const description = data.weather[0].description;
+        const { temp, humidity } = data.main;
+        const icon = data.weather[0].icon;
+
+        for(let i=0; i<forcastDays; i++)
+
+        // To display the forecast weather on the site
+        document.querySelector(".city").innerText = "Weather In " + Name;
+        document.querySelector(".short").innerText = description;
+        document.querySelector(".temperature").innerText = temp + "°F";
+        document.querySelector(".humidity").innerText = "Humidity: " + humidity + "%";
+        document.querySelector(".weather-icon").src = "http://openweathermap.org/img/wn/"+ icon +".png";
+        document.body.style.backgroundImage = "url('https://source.unsplash.com/1600x900/?" + description + "')";
+        console.log(icon); 
+      
+      }
   }
 
 
@@ -60,3 +105,11 @@ form.addEventListener ("submit", function (event) {
   console.log(cityName);
   getCurrentWeatherInfo(cityName);
 })
+
+form.addEventListener ("submit", function (event) {
+  event.preventDefault();
+  var cityName = searchInput.value;
+  console.log(cityName);
+  getForecastWeatherInfo(cityName);
+})
+}
