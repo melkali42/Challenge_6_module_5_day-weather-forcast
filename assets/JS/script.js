@@ -60,6 +60,9 @@ function getCurrentWeatherInfo(cityName) {
         const sunsetTimestamp = data.sys.sunset;
         const sunriseTime = new Date(sunriseTimestamp * 1000);
         const sunsetTime = new Date(sunsetTimestamp * 1000);
+        const longitude  = data.coord.lon;
+        const latitude = data.coord.lat;
+        console.log(lon, lat)
         
               
         // To display the current weather on the site
@@ -75,6 +78,8 @@ function getCurrentWeatherInfo(cityName) {
         document.querySelector(".weather-icon").src = "http://openweathermap.org/img/wn/"+ icon +".png";
         document.body.style.backgroundImage = "url('https://source.unsplash.com/1600x900/?" + description + "')";
         console.log(icon);
+        document.querySelector(".longitude").innerText = "longitude: " + lon;
+        document.querySelector(".latitude").innerText = "lat: " + lat;
     }
 
       function displayForecastWeather(data) {

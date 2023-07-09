@@ -95,11 +95,6 @@ body {
     padding: 0.8rem;
 }
 
-.todo_suggestion{
-    font-style: italic;
-    font-weight: lighter;
-    padding: 1rem;
-}
 
 .placeholder {
     font-family: 'Times New Roman', Times, serif;
@@ -178,14 +173,6 @@ body {
     margin: 0;
 }
 
-#todo_suggestion{
-    justify-content: center;
-    display: flex;
-    margin: 10px;
-    color: rgb(180, 138, 194);
-    text-decoration: underline;
-}
-
 img{
     background-color: #1f1f1fd6;
     border-radius: 50%;
@@ -208,15 +195,6 @@ img{
     transition: .3s ease-in-out;
 }
 
-#inspirationalQuote{
-    font-size: 1rem;
-    font-weight: lighter;
-    font-style: italic;
-    text-align: center;
-    padding: 1rem;
-    color: #86b37c;
-
-}
 
 #no-bullets {
     list-style-type: none;
